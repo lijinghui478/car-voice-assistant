@@ -1,0 +1,123 @@
+{
+  "app_name": "车机智能语音助手",
+  "version": "1.0.0",
+  
+  "voice_settings": {
+    "wake_word": "小云小云",
+    "wake_threshold": 0.85,
+    "wake_prompt_enabled": true,
+    "wake_prompt_audio": "wake_prompt.wav",
+    "language": "zh-CN",
+    "audio_sample_rate": 16000,
+    "audio_channels": 1
+  },
+  
+  "default_apps": {
+    "music": "qq_music",
+    "navigation": "amap",
+    "supported_music_apps": [
+      "qq_music",
+      "netease_music",
+      "kugou_music",
+      "kuwo_music"
+    ],
+    "supported_navigation_apps": [
+      "amap",
+      "baidu_map",
+      "tencent_map"
+    ]
+  },
+  
+  "coze_bot": {
+    "enabled": true,
+    "bot_token": "请在此处配置您的扣子Bot Token",
+    "bot_id": "请在此处配置您的扣子Bot ID",
+    "api_url": "https://api.coze.cn/open_api/v2/chat",
+    "model": "gpt-4-turbo"
+  },
+  
+  "vehicle_settings": {
+    "protocol_box": {
+      "enabled": true,
+      "serial_port": "/dev/ttyUSB0",
+      "baud_rate": 115200,
+      "timeout": 1.0,
+      "auto_detect": true
+    },
+    "camera_360": {
+      "max_safe_speed": 15,
+      "package_name": "com.camera360.app"
+    }
+  },
+  
+  "android_integration": {
+    "use_android_api": true,
+    "media_session_enabled": true,
+    "background_service": true,
+    "permissions": [
+      "android.permission.RECORD_AUDIO",
+      "android.permission.ACCESS_FINE_LOCATION",
+      "android.permission.BLUETOOTH",
+      "android.permission.BLUETOOTH_CONNECT",
+      "android.permission.WRITE_SETTINGS",
+      "android.permission.SYSTEM_ALERT_WINDOW"
+    ]
+  },
+  
+  "logging": {
+    "level": "INFO",
+    "log_file": "logs/voice_assistant.log",
+    "max_file_size": 10485760,
+    "backup_count": 5,
+    "colored_console": true
+  },
+  
+  "voice_commands": {
+    "music": {
+      "play": ["播放", "开始播放", "放首歌"],
+      "pause": ["暂停", "停一下", "别播了"],
+      "next": ["下一首", "切歌", "换一首"],
+      "previous": ["上一首", "回去", "再来一遍"],
+      "search": ["放一首", "搜索", "找首歌"]
+    },
+    "navigation": {
+      "navigate": ["导航到", "去", "前往", "我要去"],
+      "search": ["搜索", "找", "附近"],
+      "home": ["回家", "导航回家"],
+      "company": ["去公司", "去上班", "导航去公司"],
+      "cancel": ["取消导航", "结束导航"]
+    },
+    "air_conditioner": {
+      "turn_on": ["开空调", "打开空调", "空调开一下"],
+      "turn_off": ["关空调", "关闭空调", "别开空调"],
+      "increase_temp": ["调高温度", "热一点", "升温"],
+      "decrease_temp": ["调低温度", "凉一点", "降温"],
+      "set_temp": ["温度设为", "调到", "设置温度"]
+    },
+    "camera_360": {
+      "turn_on": ["打开360", "开360", "全景影像"],
+      "turn_off": ["关闭360", "关360"],
+      "switch_view": ["切换到", "看前面", "看后面", "看左边", "看右边", "鸟瞰图"],
+      "narrow_mode": ["窄道模式", "窄道", "打开窄道", "关闭窄道"]
+    }
+  },
+  
+  "advanced_settings": {
+    "voice_recognition": {
+      "model": "Qwen3-ASR-1.7B",
+      "device": "cpu",
+      "quantize": true,
+      "enable_streaming": true
+    },
+    "wake_detection": {
+      "model": "FunASR-sanm-kws",
+      "debounce_interval": 2.0,
+      "enable_false_wake_detection": true
+    },
+    "performance": {
+      "enable_cache": true,
+      "max_memory_usage": 512,
+      "thread_pool_size": 4
+    }
+  }
+}

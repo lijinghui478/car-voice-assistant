@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.carvoiceassistant"
+    android:versionCode="1"
+    android:versionName="1.0.0">
+
+    <!-- 权限声明 -->
+    
+    <!-- 音频录制权限 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    
+    <!-- 网络权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    
+    <!-- 蓝牙权限 -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    
+    <!-- 存储权限 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    
+    <!-- 车辆相关权限 -->
+    <uses-permission android:name="android.permission.CAR_SPEED" />
+    <uses-permission android:name="android.permission.CAR_FUEL" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    
+    <!-- 系统权限 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    
+    <!-- USB设备权限 -->
+    <uses-permission android:name="android.permission.USB_PERMISSION" />
+    
+    <!-- 相机权限（360全景） -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:requestLegacyExternalStorage="true">
+
+        <!-- 主Activity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Translucent">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- 后台语音服务 -->
+        <service
+            android:name=".service.VoiceBackgroundService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="microphone" />
+
+        <!-- 语音识别服务 -->
+        <service
+            android:name=".service.VoiceRecognitionService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <!-- 唤醒检测服务 -->
+        <service
+            android:name=".service.WakeWordDetectionService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <!-- 车辆状态监听服务 -->
+        <service
+            android:name=".service.VehicleStateService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <!-- 音乐控制服务 -->
+        <service
+            android:name=".service.MusicControlService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <!-- 空调控制服务 -->
+        <service
+            android:name=".service.ACControlService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <!-- 360控制服务 -->
+        <service
+            android:name=".service.Camera360Service"
+            android:enabled="true"
+            android:exported="false" />
+
+        <!-- 导航控制服务 -->
+        <service
+            android:name=".service.NavigationControlService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <!-- 开机自启动接收器 -->
+        <receiver
+            android:name=".receiver.BootCompleteReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 蓝牙连接状态接收器 -->
+        <receiver
+            android:name=".receiver.BluetoothStateReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
+                <action android:name="android.bluetooth.device.action.ACL_CONNECTED" />
+                <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 车辆状态变化接收器 -->
+        <receiver
+            android:name=".receiver.VehicleStateReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.carvoiceassistant.ACTION_VEHICLE_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 语音唤醒广播接收器 -->
+        <receiver
+            android:name=".receiver.WakeWordReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.carvoiceassistant.ACTION_WAKE_WORD_DETECTED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 设置Activity -->
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/settings"
+            android:parentActivityName=".MainActivity" />
+
+        <!-- 语音助手界面Activity -->
+        <activity
+            android:name=".VoiceAssistantActivity"
+            android:label="@string/voice_assistant"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.VoiceAssistant" />
+
+    </application>
+
+</manifest>
