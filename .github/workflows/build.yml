@@ -11,19 +11,30 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       
     - name: Setup Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
         python-version: '3.8'
+        cache: 'pip'
         
-    - name: Install dependencies
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '11'
+        cache: 'gradle'
+        
+    - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y openjdk-11-jdk build-essential
+        sudo apt-get install -y build-essential automake libtool pkg-config
+        
+    - name: Install Buildozer
+      run: |
         pip install --upgrade pip
-        pip install buildozer
+        pip install buildozer==1.4.0
         
     - name: Install app dependencies
       run: |
@@ -32,9 +43,27 @@ jobs:
     - name: Build APK
       run: |
         buildozer android debug
+      continue-on-error: false
+        
+    - name: Check APK exists
+      run: |
+        if [ ! -f bin/*.apk ]; then
+          echo "❌ APK构建失败"
+          exit 1
+        fi
+        echo "✓ APK构建成功"
+        ls -lh bin/*.apk
         
     - name: Upload APK
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
-        name: car-voice-assistant-apk
+        name: car-voice-assistant-apk-${{ github.run_number }}
         path: bin/*.apk
+        retention-days: 30
+        
+    - name: Notify result
+      if: always()
+      run: |
+        echo "构建完成！"
+        echo "访问链接下载APK："
+        echo "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
